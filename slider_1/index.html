@@ -1,0 +1,187 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <main>
+		<h1>Slider Ofinto</h1>
+		<div class="wrapper">
+		  <div id="centerBox">
+			<div id="center"></div>
+		  </div>
+		  <ul class="items">
+			<li class="item">9</li>
+			<li class="item">0</li>
+			<li class="item">1</li>
+			<li class="item">2</li>
+			<li class="item">3</li>
+			<li class="item">4</li>
+			<li class="item">5</li>
+			<li class="item">6</li>
+			<li class="item">7</li>
+			<li class="item">8</li>
+			<li class="item">9</li>
+			<li class="item">0</li>
+			<li class="item">1</li>
+		  </ul>
+		</div>
+	  </main>
+	  
+
+<style>
+
+
+body {
+  color: #333;
+  text-align: center;
+  background: #222;
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 0;
+}
+main h1 {
+  margin-bottom: 50px;
+}
+
+.wrapper {
+  position: relative;
+}
+.wrapper:before, .wrapper:after {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  content: "";
+  display: block;
+  width: 20px;
+  height: 100%;
+}
+.wrapper:before {
+  left: 0;
+  background: linear-gradient(90deg, #222, transparent);
+}
+.wrapper:after {
+  right: 0;
+  background: linear-gradient(-90deg, #222, transparent);
+}
+
+.items {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0;
+  cursor: pointer;
+}
+.items.active {
+  cursor: grab;
+}
+
+.item {
+  display: inline-block;
+  margin-left: 20px;
+  user-select: none;
+  background: tomato;
+  width: 50%;
+  height: 130px;
+  color: #222;
+  font-size: 33px;
+  font-weight: bold;
+  line-height: 130px;
+}
+.item:last-child {
+  margin-right: 20px;
+}
+
+@media screen and (min-width: 500px) {
+  .item {
+    width: 33%;
+  }
+}
+@media screen and (min-width: 800px) {
+  .item {
+    width: 25%;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .wrapper {
+    margin-left: -20px;
+  }
+
+  .item {
+    width: 20%;
+  }
+}
+</style>
+
+<script>
+
+let isDown = false;
+let startX;
+let scrollLeft;
+const slider = document.querySelector('.items');
+
+const end = () => {
+  isDown = false;
+  slider.classList.remove('active');
+}
+
+const start = (e) => {
+  isDown = true;
+  slider.classList.add('active');
+  startX = e.pageX || e.touches[0].pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;  
+}
+
+const move = (e) => {
+  if (!isDown) return;
+
+  e.preventDefault();
+  const x = e.pageX || e.touches[0].pageX - slider.offsetLeft;
+  const dist = (x - startX);
+  slider.scrollLeft = scrollLeft - dist;
+
+  // Si el scroll llega al final, volver al primer elemento
+  if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
+    slider.scrollLeft = 0;
+  }
+}
+
+(() => {
+  // Clonar el primer y último elemento
+  const firstItem = slider.querySelector('.item:first-child');
+  const lastItem = slider.querySelector('.item:last-child');
+  slider.insertBefore(lastItem.cloneNode(true), firstItem);
+  slider.appendChild(firstItem.cloneNode(true));
+
+  slider.addEventListener('mousedown', start);
+  slider.addEventListener('touchstart', start);
+
+  slider.addEventListener('mousemove', move);
+  slider.addEventListener('touchmove', move);
+
+  slider.addEventListener('mouseleave', end);
+  slider.addEventListener('mouseup', end);
+  slider.addEventListener('touchend', end);
+})();
+
+
+</script>
+
+</body>
+</html>
