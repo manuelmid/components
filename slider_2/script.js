@@ -41,6 +41,10 @@ const dragStart = (e) => {
     isDragStart = true;
     prevPageX = e.pageX || e.touches[0].pageX;
     prevScrollLeft = carousel.scrollLeft;
+
+    /* setInterval(() => {
+        console.log(carousel.scrollLeft)
+    }, 100); */
 }
 
 const dragging = (e) => {

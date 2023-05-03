@@ -18,6 +18,8 @@ body{
   display: flex;
   max-width: 1200px;
   position: relative;
+
+  border: 2px solid red;
 }
 .wrapper i{
   top: 50%;
@@ -41,11 +43,11 @@ body{
   background: #f2f2f2;
 }
 .wrapper i:first-child{
-  left: -50px;
+  left: -45px;
   display: none;
 }
 .wrapper i:last-child{
-  right: -50px;
+  right: -45px;
 }
 .wrapper .carousel{
   font-size: 0px;
@@ -53,6 +55,8 @@ body{
   overflow: hidden;
   white-space: nowrap;
   scroll-behavior: smooth;
+
+  border: 3px solid green;
 }
 .carousel.dragging{
   cursor: grab;
