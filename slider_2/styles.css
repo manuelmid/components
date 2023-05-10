@@ -44,7 +44,7 @@ body{
 }
 .wrapper i:first-child{
   left: -45px;
-  display: none;
+
 }
 .wrapper i:last-child{
   right: -45px;
