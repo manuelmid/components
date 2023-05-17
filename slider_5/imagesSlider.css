@@ -65,6 +65,9 @@ body {
 .carousel.dragging .card {
   cursor: grab;
   user-select: none;
+
+  /* MODIFIDED */
+  border: 2px solid goldenrod;
 }
 .carousel :where(.card, .img) {
   display: flex;
@@ -77,7 +80,7 @@ body {
   scroll-snap-align: start;
   height: 342px;
   list-style: none;
-  background: #fff;
+  /* background: #fff; */
   cursor: pointer;
   /* padding-bottom: 15px; */
   flex-direction: column;

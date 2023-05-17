@@ -61,7 +61,8 @@ body {
 .carousel.dragging {
   scroll-snap-type: none;
   scroll-behavior: auto;
-}
+
+/* To check */}
 .carousel.dragging .card {
   cursor: grab;
   user-select: none;
