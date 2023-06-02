@@ -34,9 +34,11 @@ arrowBtns.forEach(function (btn) {
 
 var dragStart = function dragStart(e) {
     isDragging = true;
-    carousel.classList.add('dragging');
+   // carousel.classList.add('dragging');
     startX = e.pageX;
     startScrollLeft = carousel.scrollLeft;
+
+    console.log("arrastrando "+startX)
 };
 
 var dragging = function dragging(e) {
@@ -46,8 +48,9 @@ var dragging = function dragging(e) {
 
 var dragStop = function dragStop() {
     isDragging = false;
-    carousel.classList.remove('dragging');
+    //carousel.classList.remove('dragging');
 
+    console.log("soltar")
     //To check up
 };
 
@@ -81,3 +84,4 @@ carousel.addEventListener('scroll', infiniteScroll);
 wrapper.addEventListener('mouseenter', function () {
     return clearTimeout(timeoutId);
 });
+
