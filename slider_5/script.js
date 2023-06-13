@@ -49,6 +49,16 @@ const dragging = (e) => {
 const dragStop = () => {
     isDragging = false;
     carousel.classList.remove("dragging");
+
+    const centerPosition = Math.round(carousel.scrollLeft / firstCardWidth) * firstCardWidth;
+    carousel.scrollTo({
+      left: centerPosition,
+      behavior: "smooth"
+    });
+//Jquery
+/* const centerPosition = Math.round($(".carousel")[0].scrollLeft / firstCardWidth) * firstCardWidth;
+$(".carousel").animate({ scrollLeft: centerPosition }, "slow"); */
+
 }
 
 const infiniteScroll = () => {
