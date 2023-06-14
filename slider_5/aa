@@ -1,0 +1,234 @@
+<div class="custom-slider-wrapper">
+  <i id="left" class="left fa-solid fa-angle-left" style="z-index: 1;"></i>
+  <ul class="carousel">
+      {% for r in customer_references %}
+        {% if r.visible %}
+            <li name="{{ r.name }}" class="card">
+                <!--<a href="#" target="_blank">-->
+                    <div class="img">
+                        <img src="{{ r.image }}" alt="" draggable="false">
+                    </div>
+                <!--</a>-->
+            </li>
+        {% endif %}
+      {% endfor %}
+  </ul>
+  <i id="right" class="right fa-solid fa-angle-right" style="z-index: 1;"></i>
+</div>
+
+<style>
+
+/* Import Google font - Poppins */
+.custom-slider-wrapper {
+  width: 100%;
+  position: relative;
+}
+.custom-slider-wrapper i {
+  top: 50%;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  position: absolute;
+  text-align: center;
+  line-height: 50px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+  transform: translateY(-50%);
+  transition: transform 0.1s linear;
+}
+.custom-slider-wrapper i:active{
+  transform: translateY(-50%) scale(0.85);
+}
+.custom-slider-wrapper i:first-child{
+  left: -22px;
+}
+.custom-slider-wrapper i:last-child{
+  right: -22px;
+}
+.custom-slider-wrapper .carousel{
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% / 3) - 12px);
+  overflow-x: auto;
+  gap: 16px;
+  border-radius: 8px;
+
+  /* scroll-snap-type: x mandatory; */
+  /*scroll-snap-type: none;*/
+}
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+.carousel.no-transition {
+  scroll-behavior: smooth;
+}
+.carousel.dragging {
+  /*scroll-snap-type: x mandatory;*/
+  scroll-snap-type: none;
+  scroll-behavior: smooth;
+}
+.carousel.dragging {
+  cursor: grab;
+  user-select: none;
+}
+/*.carousel.dragging .card {
+  cursor: grab;
+  user-select: none;
+}*/
+.carousel :where(.card, .img) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.carousel .card {
+  padding: 25px;
+  scroll-snap-align: start;
+  height: 342px;
+  list-style: none;
+  /* background: #fff; */
+  cursor: pointer;
+  /* padding-bottom: 15px; */
+  flex-direction: column;
+  border-radius: 8px;
+}
+.carousel .card .img {
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+}
+.card .img img {
+  width: 100%;
+  height: 50%;
+  object-fit: contain;
+}
+.card .img:hover{
+    transform: scale(1.1);
+    transition: 1s;
+}
+.carousel .card h2 {
+  font-weight: 500;
+  font-size: 1.56rem;
+  margin: 30px 0 5px;
+}
+.carousel .card span {
+  color: #6A6D78;
+  font-size: 1.31rem;
+}
+
+@media screen and (max-width: 900px) {
+  .custom-slider-wrapper .carousel {
+    grid-auto-columns: calc((100% / 2) - 9px);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .custom-slider-wrapper .carousel {
+    grid-auto-columns: 100%;
+  }
+}
+
+</style>
+
+<script>
+
+$(document).ready(function() {
+    var isDragging = false,
+        isAutoplay = true,
+        startX,
+        startScrollLeft,
+        interval;
+        
+    // get all sliders and set unique IDs
+    $(".custom-slider-wrapper").each(function(i, e) {
+        var carousel = $(e).children(".carousel");
+        var firstCardWidth = carousel.children(".card").width();
+        var carouselChildren = carousel.children(".card");
+        var cardPerView = Math.round(carousel.width() / firstCardWidth);
+
+        $(carouselChildren.slice(-cardPerView).get().reverse()).each(function(index, card) {
+            carousel.prepend(card.outerHTML);
+        });
+        $(carouselChildren.slice(0, cardPerView)).each(function(index, card) {
+            carousel.append(card.outerHTML);
+        });
+
+        //carousel.addClass("no-transition");
+        carousel.scrollLeft(carousel.width());
+        //carousel.removeClass("no-transition");
+    });
+
+    $(".custom-slider-wrapper i").click(function() {
+        var carousel = $(this).parent().children(".carousel");
+        var firstCardWidth = carousel.children(".card").width();
+        var scrollDirection = $(this).hasClass("left") ? "left" : "right";
+        moveSlide(carousel, scrollDirection, firstCardWidth);
+    });
+
+
+
+    var dragStart = function(e) {
+        var carousel = $(e.target);
+        isDragging = true;
+        carousel.addClass('dragging');
+        startX = e.pageX;
+        startScrollLeft = carousel.scrollLeft();
+    };
+
+    var dragging = function(e) {
+        if (!isDragging) return;
+        var carousel = $(e.target);
+        carousel.scrollLeft(startScrollLeft - (e.pageX - startX));
+    };
+
+    var dragStop = function(e) {
+        isDragging = false;
+        var carousel = $(e.target);
+        carousel.removeClass('dragging');
+    };
+
+    var infiniteScroll = function(e) {
+        var carousel = $(e.target);
+        var wrapper = carousel.parent(".custom-slider-wrapper");
+        if (carousel.scrollLeft() === 0) {
+            carousel.addClass('no-transition');
+            carousel.scrollLeft(carousel[0].scrollWidth - 2 * carousel.outerWidth());
+            carousel.removeClass('no-transition');
+        } else if (Math.ceil(carousel.scrollLeft()) === carousel[0].scrollWidth - carousel.outerWidth()) {
+            carousel.addClass('no-transition');
+            carousel.scrollLeft(carousel.outerWidth());
+            carousel.removeClass('no-transition');
+        }
+    };
+
+    $(".custom-slider-wrapper").mouseenter(function() {
+        clearInterval(interval);
+    });
+    $(".custom-slider-wrapper").mouseleave(function() {
+        autoPlaySliders();
+    });
+
+    $(".carousel").on('mousedown', dragStart);
+    $(".carousel").on('mousemove', dragging);
+    $(".carousel").on('mouseup', dragStop);
+    $(".carousel").on('mouseleave', dragStop);
+    $(".carousel").on('scroll', infiniteScroll);
+
+    function autoPlaySliders() {
+        interval = setInterval(function() {
+            $(".carousel").each(function(i,e) {
+                moveSlide($(e), "right", $(e).children(".card").width())
+            });
+        }, 1000);
+    }
+
+    function moveSlide(carousel, direction, moveDistance) {
+        var scrollLeft = carousel.scrollLeft();
+        direction == "left" ? carousel.scrollLeft(scrollLeft - moveDistance) : carousel.scrollLeft(scrollLeft + moveDistance);
+    }
+    
+    if ($('wrapper:hover').length == 0 && isAutoplay) autoPlaySliders();
+});
+
+</script>

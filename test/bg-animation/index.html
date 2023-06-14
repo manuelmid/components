@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+
+.Bg-animation{
+    width: 100%;
+    height: 75vh;
+}
+
+@media only screen and (min-width: 75rem) {
+    .Bg-animation {
+        background-image:url(https://static.platzi.com/media/uploads/P_Day_Hero_v5_UI_sola_2_d8f42f6939.png),url(https://static.platzi.com/media/uploads/P_Day_Hero_v5_UI_sola_2_d8f42f6939.png);
+
+    }
+}
+
+@media only screen and (min-width: 1360px) {
+    .Bg-animation { 
+        background-position:calc(-60px - var(--scrollY)),calc(100% + 60px + var(--scrollY))
+    }
+}
+
+@media only screen and (min-width: 1500px) {
+    .Bg-animation {
+        background-position:calc(-400px - var(--scrollY)),calc(100% + 400px + var(--scrollY))
+    }
+}
+    </style>
+
+    <div class="Bg-animation"></div>
+</body>
+</html>
