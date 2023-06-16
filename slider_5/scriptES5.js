@@ -61,7 +61,7 @@ var dragStop = function () {
         left: centerPosition,
         behavior: "smooth"
     });
-    console.log(centerPosition);
+    console.log(centerPosition + carousel.classList);
 }
 
 var infiniteScroll = function () {
