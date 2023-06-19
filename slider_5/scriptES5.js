@@ -43,6 +43,8 @@ var dragStart = function (e) {
     // Records the initial cursor and scroll position of the carousel
     startX = e.pageX;
     startScrollLeft = carousel.scrollLeft;
+
+    console.log(startX)
 }
  
 var dragging = function (e) {
