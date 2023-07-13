@@ -1,0 +1,1 @@
+make slider_5 wating time after press an arrow (1sc)
